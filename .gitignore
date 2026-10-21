@@ -1,0 +1,9 @@
+assets/fonts/rebak-demo.ttf
+.DS_Store
+__MACOSX/
+*.pyc
+__pycache__/
+node_modules/
+.env
+.env.*
+.preview/
