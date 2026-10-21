@@ -1,13 +1,11 @@
 @font-face { font-family: 'Archivo Narrow'; src: url(assets/fonts/archivo-narrow.ttf) format('truetype'); font-weight: 400 700; font-display: swap; }
-@font-face { font-family: 'DM Serif Display'; src: url(assets/fonts/dm-serif-display.ttf) format('truetype'); font-display: swap; }
-/* Local comparison only; the supplied demo file is ignored by Git. */
-@font-face { font-family: Rebak; src: url(assets/fonts/rebak-demo.ttf) format('truetype'); font-display: swap; }
+@font-face { font-family: 'Bodoni Moda'; src: url(assets/fonts/bodoni-moda.ttf) format('truetype'); font-weight: 400 900; font-display: swap; }
 :root {
   --red: #b80c10;
   --ink: #191b16;
   --paper: #e9e6dc;
   --white: #f8f4e9;
-  --display: 'DM Serif Display', Georgia, serif;
+  --display: 'Bodoni Moda', Georgia, serif;
   --body: 'Archivo Narrow', 'Arial Narrow', Arial, sans-serif;
   color-scheme: dark;
 }
@@ -15,7 +13,6 @@
 html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
 body { margin: 0; background: var(--red); color: var(--white); font: 18px/1.45 var(--body); -webkit-font-smoothing: antialiased; }
 body.dialog-open { overflow: hidden; }
-html[data-type='rebak'] { --display: Rebak, 'DM Serif Display', Georgia, serif; }
 button, a { -webkit-tap-highlight-color: transparent; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; border: 0; border-radius: 0; background: none; cursor: pointer; padding: 0; }
@@ -29,7 +26,7 @@ figure, p, h1, h2, h3 { margin: 0; }
 .skip-link { position: fixed; z-index: 99; left: 20px; top: -100px; padding: 10px 20px; background: var(--paper); color: var(--ink); }
 .skip-link:focus { top: 20px; }
 .scene { position: relative; min-height: 100svh; scroll-snap-align: start; overflow: hidden; }
-.display { font-family: var(--display); font-weight: 400; line-height: .95; letter-spacing: -.045em; }
+.display { font-family: var(--display); font-weight: 900; font-optical-sizing: auto; line-height: .95; letter-spacing: -.045em; }
 .eyebrow { font-size: 13px; line-height: 1.3; text-transform: uppercase; letter-spacing: .18em; }
 .small-note { font-size: 12px; line-height: 1.5; letter-spacing: .03em; }
 .text-link { display: inline-flex; align-items: baseline; gap: 25px; border-bottom: 1px solid currentColor; padding: 7px 0 9px; font-size: 18px; }
@@ -53,7 +50,7 @@ figure, p, h1, h2, h3 { margin: 0; }
   position: absolute; height: 75%; width: min(85svh, 88vw); bottom: 0; left: 50%; transform: translateX(-50%);
 }
 .hero__portrait img { height: 100%; width: 100%; object-fit: contain; object-position: center bottom; }
-.hero h1 { position: absolute; z-index: 1; top: 4.5%; left: 50%; transform: translateX(-50%); font: 400 clamp(60px, 14.3vw, 250px)/1.1 var(--display); letter-spacing: -.055em; white-space: nowrap; }
+.hero h1 { position: absolute; z-index: 1; top: 4.5%; left: 50%; transform: translateX(-50%); font: 900 clamp(60px, 14.3vw, 250px)/1.1 var(--display); font-optical-sizing: auto; letter-spacing: -.055em; white-space: nowrap; }
 .hero__links { position: absolute; bottom: 7%; left: 50%; transform: translateX(-50%); display: flex; gap: clamp(22px, 4vw, 65px); z-index: 2; }
 .hero__links a { font-size: 18px; position: relative; padding: 5px 0; text-shadow: 0 1px 6px #0008; }
 .hero__links a::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 1px; background: currentColor; transition: width .25s, left .25s; }
@@ -61,7 +58,7 @@ figure, p, h1, h2, h3 { margin: 0; }
 
 .release { background: #10120f; display: grid; grid-template-columns: 1fr 1fr; gap: 8vw; align-items: center; padding: 95px 11vw 75px 8vw; }
 .release__copy, .release__records { position: relative; min-width: 0; }
-.release__copy .display { font-size: clamp(100px, 14vw, 220px); margin: 20px 0 26px; }
+.release__copy .display { font-size: min(210px, 40cqw); margin: 20px 0 26px; }
 .release__year { font-size: 22px; opacity: .7; }
 .release .text-links { margin: 30px 0 28px; }
 .release .small-note { opacity: .55; }
@@ -114,7 +111,7 @@ figure, p, h1, h2, h3 { margin: 0; }
 
 .contact { background: var(--red); padding: 100px 11vw 90px 8vw; display: grid; grid-template-columns: 1.4fr 1fr; align-items: center; gap: 8vw; }
 .contact__content { min-width: 0; }
-.contact__content .display { font-size: min(140px, 30cqw); margin: 0 0 40px; }
+.contact__content .display { font-size: min(140px, 27cqw); margin: 0 0 40px; }
 .contact__email { display: inline-block; font-size: clamp(18px, 2vw, 30px); padding-bottom: 10px; border-bottom: 1px solid #fff8; overflow-wrap: anywhere; line-height: 1.25; }
 .contact__email span { display: inline-block; margin-left: 20px; }
 .contact__person { margin-top: 12px; opacity: .6; }
@@ -170,7 +167,7 @@ dialog::backdrop { background: #0b0c0bf0; }
   .hero__links { gap: clamp(16px, 5vw, 30px); bottom: 7.5%; width: calc(100% - 85px); justify-content: center; }
   .hero__links a { font-size: 16px; }
   .release { grid-template-columns: 1fr; padding: 85px 60px 70px 24px; gap: 45px; }
-  .release__copy .display { font-size: min(130px, 46cqw); margin: 12px 0 20px; }
+  .release__copy .display { font-size: min(130px, 40cqw); margin: 12px 0 20px; }
   .release__records { max-width: 420px; width: 100%; justify-self: center; }
   .release__cover, .discography { max-width: 340px; }
   .release .small-note { font-size: 11px; }
@@ -225,15 +222,5 @@ dialog::backdrop { background: #0b0c0bf0; }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
 
-/* Rebak has much wider glyphs. Size its local preview against each text column. */
+/* Display sizes respond to each text column. */
 .release__copy, .biography__copy, .live__intro, .contact__content { container-type: inline-size; }
-html[data-type='rebak'] .hero h1 { font-size: clamp(42px, 11.8vw, 200px); top: 10%; }
-html[data-type='rebak'] .release__copy .display { font-size: min(145px, 29cqw); margin-top: 0; }
-html[data-type='rebak'] .biography__copy h2 { font-size: min(90px, 24cqw); }
-html[data-type='rebak'] .gallery__content h2 { font-size: clamp(48px, 11vw, 160px); }
-html[data-type='rebak'] .live__intro h2 { font-size: min(160px, 32cqw); margin-top: 0; }
-html[data-type='rebak'] .contact__content .display { font-size: min(100px, 14cqw); }
-@media (max-width: 720px) {
-  html[data-type='rebak'] .hero h1 { font-size: 11.8vw; top: 12%; }
-  html[data-type='rebak'] .gallery__content h2 { font-size: 16vw; }
-}

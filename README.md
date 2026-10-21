@@ -8,9 +8,9 @@ A single page in six sections: home, aleas / discography, biography, gallery, li
 python3 -m http.server 8000
 ```
 
-Open `http://localhost:8000/`. The default display face is DM Serif Display; body text uses Archivo Narrow. Both are hosted locally with their SIL Open Font Licenses in `assets/fonts/`.
+Open `http://localhost:8000/`. Display titles use **Bodoni Moda Black (weight 900)**; body text uses Archivo Narrow. Both fonts are self-hosted with their SIL Open Font Licenses in `assets/fonts/`. Bodoni Moda is sourced from [Google Fonts](https://github.com/google/fonts/tree/main/ofl/bodonimoda).
 
-To compare the supplied Rebak demo locally, put your copy at `assets/fonts/rebak-demo.ttf` and open `http://localhost:8000/?type=rebak`. The demo is ignored by Git and excluded from public source. Add a licensed webfont before using Rebak in a public deployment.
+The earlier Rebak file is a personal-use demo and remains ignored by Git. The public site uses Bodoni Moda throughout; it has no demo font request or query-string typography switch.
 
 ## Editing the site
 
@@ -42,4 +42,4 @@ The long-scroll structure and side navigation take [Ben van Gelder's site](https
 
 ## Source publication and hosting
 
-Preserve `CNAME` (`www.desvisages.net`). This first version is prepared in a separate branch / pull request, so source can be reviewed without changing the live Pages branch. Publishing source to a task branch does not deploy it. DNS / Pages settings are a separate step.
+Preserve `CNAME` (`www.desvisages.net`). GitHub Pages publishes from `main` at the repository root. A successful merge into `main` triggers the `pages build and deployment` workflow. Continue using task branches and pull requests for subsequent changes, then integrate / deploy within the owner's authorization.

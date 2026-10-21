@@ -2,11 +2,6 @@
   'use strict';
   document.documentElement.classList.add('js');
 
-  // Typography comparison, available only when the ignored demo is present.
-  if (new URLSearchParams(window.location.search).get('type') === 'rebak') {
-    document.documentElement.dataset.type = 'rebak';
-  }
-
   const sections = [...document.querySelectorAll('main > section[id]')];
   const sectionLinks = [...document.querySelectorAll('.section-nav a')];
   let framePending = false;
