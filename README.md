@@ -14,9 +14,9 @@ To compare the supplied Rebak demo locally, put your copy at `assets/fonts/rebak
 
 ## Editing the site
 
-- **Sections:** the six `.section-nav` links and six `main > section` elements in `index.html` correspond one to one. The hero menu links to the same sections. The left marks track normal page scrolling; the current mark becomes a small block.
-- **Photos:** put optimized WebP files in `assets/images/`, then update `<img>` paths, dimensions, alt text, credits and gallery buttons' `data-full` / `data-caption`. The biography uses a portrait alongside text instead of stretching a vertical image across the viewport.
-- **Films:** add videos to `.gallery__films`. Native controls, posters and `preload="none"` keep playback intentional and initial loading light.
+- **Sections:** the six `.section-nav` links and six `main > section` elements in `index.html` correspond one to one. The hero menu links to the same sections. The right-side marks track normal page scrolling. Inactive marks are 24 × 4 px, with a 24 × 24 px active square and 32 px row spacing (20 px / 28 px on mobile).
+- **Photos:** put optimized WebP files in `assets/images/`, then update `<img>` paths, dimensions, alt text, and entries in the `#gallery-data` JSON block. The biography uses its supplied portrait alongside text instead of stretching a vertical image across the viewport. Keep visible copy limited to section titles, functional labels and the biography based on the owner’s supplied text; do not add slogans.
+- **Films:** the Gallery cover has a single photo background; Photos opens the collection in a lightbox and Videos opens `#video-dialog`. Add videos to that dialog. Native controls, posters and `preload="none"` keep playback intentional and initial loading light.
 - **Discography:** aleas has the main release section; the debut EP appears below its artwork. The music dialog loads the existing Bandcamp album IDs only when requested and includes a direct Bandcamp fallback link.
 - **Concerts:** add an `.event` article inside `.events-list`, with `data-date="YYYY-MM-DD"` and a matching `<time datetime>`. JavaScript sorts / separates upcoming and archived dates against Europe/Amsterdam time. A known month or year can use `YYYY-MM` or `YYYY`; do not invent missing date components. Only publish confirmed events and actual ticket / venue links.
 - **Contacts:** current bookings use César's public email. Instagram / YouTube are explicitly labelled as his accounts; Bandcamp is the duo's page. Replace with the duo's own contacts when supplied; do not guess handles or addresses.
@@ -24,9 +24,11 @@ To compare the supplied Rebak demo locally, put your copy at `assets/fonts/rebak
 
 ## Source material and limits of the first version
 
-Biographical and release details, album IDs, contacts, artwork and the audiovisual excerpt were recovered from `cesarvidalmusic/cesarvidalmusic`, specifically `des-visages.html`, `aleas.html`, `des-visages-ep.html`, `contact.html`, `img/` and `videos/`. Nothing in that repository was edited.
+Release details, album IDs, contacts, the debut EP artwork and the audiovisual excerpt were recovered from `cesarvidalmusic/cesarvidalmusic`, specifically `des-visages.html`, `aleas.html`, `des-visages-ep.html`, `contact.html`, `img/` and `videos/`. Nothing in that repository was edited.
 
-The red portrait is by Beatriz Álvarez and was reused with the owner's explicit permission. Responsive WebP copies preserve its colour and composition. The other gallery images are labelled stills from the existing aleas video. The uploaded photo ZIP exceeded the environment's 32 MiB transfer limit; the final biography / gallery / concert photos remain to be integrated from smaller uploads. The video is a 19.8-second excerpt, encoded for the web at 1280 px; it is not presented as a complete performance.
+The two supplied archives have now been integrated: `index.png` supplies the transparent hero cutout, `bio.webp` the biography portrait, `sección-fotos.jpg` the single Gallery background, `eventos.png` the concert background, and `cover-aleas.png` the album artwork. WebP versions include smaller mobile variants. Original images were converted to sRGB when needed; the hero retains transparency. The page background is `#b80c10`, sampled from the red border around the cutout. Original full-size uploads remain outside Git; only the web assets are committed.
+
+The red portrait was originally credited to Beatriz Álvarez on the personal site. Per the owner's explicit correction, no photographer credit appears in the site or gallery dialogs; source attribution stays here. The bio is edited from the complete text the owner supplied, retaining the instrumental setup, visual work, influences and release history. The aleas video is a 19.8-second excerpt, encoded for the web at 1280 px. It plays in a dialog without automatic audio.
 
 The initial archive contains only documented appearances:
 

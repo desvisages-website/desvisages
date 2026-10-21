@@ -34,22 +34,6 @@
   window.addEventListener('pageshow', updateCurrentSection);
   updateCurrentSection();
 
-  const galleryFilters = [...document.querySelectorAll('[data-gallery-filter]')];
-  for (const filter of galleryFilters) {
-    filter.addEventListener('click', () => {
-      for (const item of galleryFilters) {
-        const active = item === filter;
-        item.classList.toggle('is-active', active);
-        item.setAttribute('aria-pressed', String(active));
-      }
-      for (const panel of document.querySelectorAll('[data-gallery-panel]')) {
-        panel.hidden = panel.dataset.galleryPanel !== filter.dataset.galleryFilter;
-        if (panel.hidden) panel.querySelectorAll('video').forEach(video => video.pause());
-      }
-      scheduleSectionUpdate();
-    });
-  }
-
   const eventFilters = [...document.querySelectorAll('[data-event-filter]')];
   const events = [...document.querySelectorAll('.event[data-date]')];
   const dateFormatter = new Intl.DateTimeFormat('en-CA', {
@@ -87,22 +71,27 @@
   }
   filterEvents(events.some(event => event.dataset.date.length === 10 && event.dataset.date >= todayISO()) ? 'upcoming' : 'past');
 
-  const imageButtons = [...document.querySelectorAll('[data-full]')];
+  const galleryImages = JSON.parse(document.querySelector('#gallery-data').textContent);
   const photoDialog = document.querySelector('#photo-dialog');
+  const videoDialog = document.querySelector('#video-dialog');
   let imageIndex = 0;
   function displayImage(index) {
-    imageIndex = (index + imageButtons.length) % imageButtons.length;
-    const selected = imageButtons[imageIndex];
+    imageIndex = (index + galleryImages.length) % galleryImages.length;
+    const selected = galleryImages[imageIndex];
     const image = document.querySelector('#photo-full');
-    image.src = selected.dataset.full;
-    image.alt = selected.querySelector('img').alt;
-    document.querySelector('#photo-caption').textContent = selected.dataset.caption;
-    document.querySelector('#photo-counter').textContent = `${imageIndex + 1} / ${imageButtons.length}`;
+    image.src = selected.src;
+    image.alt = selected.alt;
+    document.querySelector('#photo-caption').textContent = selected.caption;
+    document.querySelector('#photo-counter').textContent = `${imageIndex + 1} / ${galleryImages.length}`;
   }
-  for (const [index, button] of imageButtons.entries()) {
+  for (const button of document.querySelectorAll('[data-gallery-open]')) {
     button.addEventListener('click', () => {
-      displayImage(index);
-      photoDialog.showModal();
+      if (button.dataset.galleryOpen === 'photos') {
+        displayImage(0);
+        photoDialog.showModal();
+      } else {
+        videoDialog.showModal();
+      }
       document.body.classList.add('dialog-open');
     });
   }
@@ -139,6 +128,11 @@
     dialog.addEventListener('close', () => {
       document.body.classList.remove('dialog-open');
       if (dialog === playerDialog) document.querySelector('#player-slot').replaceChildren();
+      if (dialog === videoDialog) {
+        const video = videoDialog.querySelector('video');
+        video.pause();
+        if (video.readyState > 0) video.currentTime = 0;
+      }
     });
   }
 })();
