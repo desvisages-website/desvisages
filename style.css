@@ -44,7 +44,6 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; }
 .section-nav__label { position: absolute; right: 50px; font-size: 12px; letter-spacing: .08em; opacity: 0; transform: translateX(5px); pointer-events: none; transition: opacity .2s, transform .2s; white-space: nowrap; }
 .section-nav a:hover .section-nav__label, .section-nav a:focus-visible .section-nav__label { opacity: 1; transform: none; }
 .js .section-nav { mix-blend-mode: normal; color: var(--white); }
-.js body[data-scene='bio'] .section-nav { color: var(--ink); }
 
 .hero { height: 100svh; min-height: 560px; isolation: isolate; background: var(--red); }
 .hero__portrait {
@@ -73,12 +72,15 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; }
 .discography__record > span:nth-child(2) { flex: 1; }
 .discography__record small { display: block; font-size: 12px; opacity: .6; }
 
-.biography { background: var(--paper); color: var(--ink); padding: 75px 10vw 75px 8vw; display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: 6vw; color-scheme: light; }
-.biography__portrait { display: block; min-width: 0; }
-.biography__portrait img { width: 100%; height: auto; max-height: 80svh; object-fit: contain; object-position: left center; }
-.biography__copy { max-width: 650px; min-width: 0; }
-.biography__copy h2 { font-size: clamp(58px, 6vw, 96px); margin: 0 0 25px; }
-.biography__copy p { margin-top: 16px; font-size: 18px; line-height: 1.55; }
+.biography { background: #081012; color: var(--white); min-height: max(100svh, 56.25vw, 900px); padding: 50px 8vw 50px 6vw; display: flex; align-items: flex-end; }
+/* Anchor the left hairline about 24 px below the crop's top edge. */
+.biography__portrait img { object-position: 50% calc(24px - max(40vw, 31.3svh)); }
+.biography::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 38%, #050a0b55 55%, #050a0bc7 72%, #050a0bf2 100%); pointer-events: none; }
+.biography__copy { position: relative; z-index: 1; width: 100%; min-width: 0; text-shadow: 0 1px 10px #0009; }
+.biography__copy h2 { font-size: clamp(48px, 4.5vw, 80px); margin: 0 0 20px; }
+.biography__text { column-count: 3; column-gap: 3.5vw; }
+.biography__text p { margin: 0 0 .8em; font-size: 17px; line-height: 1.5; orphans: 2; widows: 2; }
+.biography__text p:last-child { margin-bottom: 0; }
 
 .scene-photo { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .scene-photo img { width: 100%; height: 100%; object-fit: cover; }
@@ -142,13 +144,14 @@ dialog::backdrop { background: #0b0c0bf0; }
 .video-dialog .text-link { margin-top: 20px; }
 
 @media (min-width: 1800px) {
-  .biography__copy p { font-size: 20px; }
+  .biography__text p { font-size: 20px; }
 }
 @media (max-width: 1050px) {
   .release { gap: 6vw; }
-  .biography { gap: 5vw; grid-template-columns: .8fr 1.2fr; }
-  .biography__copy h2 { font-size: 65px; }
-  .biography__copy p { font-size: 16px; }
+  .biography { min-height: max(100svh, 860px); padding: 40px 8vw 40px 5vw; }
+  .biography__copy h2 { font-size: 56px; }
+  .biography__text { column-count: 2; column-gap: 4vw; }
+  .biography__text p { font-size: 17px; }
   .live { gap: 5vw; }
   .contact { gap: 5vw; }
   .contact__links small { font-size: 11px; }
@@ -165,7 +168,7 @@ dialog::backdrop { background: #0b0c0bf0; }
   .hero h1 { top: 7%; font-size: 16.8vw; }
   .hero__portrait { height: 90%; width: 100vw; bottom: -5%; }
   .hero__portrait img { object-fit: cover; }
-  .hero__links { gap: clamp(16px, 5vw, 30px); bottom: 7.5%; width: calc(100% - 85px); justify-content: center; }
+  .hero__links { gap: clamp(10px, 3vw, 24px); bottom: 7.5%; width: calc(100% - 56px); justify-content: center; }
   .hero__links a { font-size: 15px; }
   .release { grid-template-columns: 1fr; padding: 85px 60px 70px 24px; gap: 45px; }
   .release__copy .display { font-size: min(130px, 40cqw); margin: 12px 0 20px; }
@@ -174,11 +177,12 @@ dialog::backdrop { background: #0b0c0bf0; }
   .release .small-note { font-size: 11px; }
   .release .text-links { gap: 25px; }
   .text-link { font-size: 17px; gap: 20px; }
-  .biography { grid-template-columns: 1fr; padding: 65px 60px 65px 24px; gap: 35px; }
-  .biography__portrait { max-width: 420px; }
-  .biography__portrait img { height: auto; max-height: 65svh; width: 100%; object-position: left center; }
-  .biography__copy h2 { font-size: min(80px, 25cqw); margin: 0 0 25px; }
-  .biography__copy p { font-size: 17px; }
+  .biography { display: block; min-height: 100svh; padding: clamp(310px, 48svh, 430px) 56px 45px 24px; }
+  .biography .biography__portrait { height: clamp(460px, 75svh, 650px); }
+  .biography__portrait img { object-position: 50% calc(16px - max(40vw, clamp(144px, 23.5svh, 204px))); }
+  .biography::after { background: linear-gradient(to bottom, transparent 180px, #08101233 300px, #081012e6 430px, #081012 560px); }
+  .biography__copy h2 { font-size: clamp(34px, 8vw, 56px); margin: 0 0 25px; }
+  .biography__text p { font-size: 17px; line-height: 1.55; }
   .gallery { padding: 85px 60px 70px 24px; }
   .gallery__background img { object-position: 42% center; }
   .gallery__content h2 { font-size: min(85px, 23vw); }
@@ -208,13 +212,11 @@ dialog::backdrop { background: #0b0c0bf0; }
   .video-dialog { padding: 65px 20px 25px; }
 }
 @media (max-height: 700px) and (min-width: 721px) {
-  .scene:not(.hero) { padding-top: 70px; padding-bottom: 65px; }
+  .scene:not(.hero):not(.biography) { padding-top: 70px; padding-bottom: 65px; }
   .hero h1 { font-size: min(16.8vw, 30svh); top: 3%; }
   .hero__portrait { height: 92%; }
   .release__copy .display { font-size: 110px; margin: 10px 0 18px; }
   .release__cover, .discography { max-width: 300px; }
-  .biography__copy h2 { font-size: 48px; margin: 15px 0 20px; }
-  .biography__copy p { font-size: 16px; margin-top: 12px; }
   .contact__content .display { font-size: 80px; }
   .live__intro h2 { font-size: 140px; }
 }
@@ -224,4 +226,8 @@ dialog::backdrop { background: #0b0c0bf0; }
 }
 
 /* Display sizes respond to each text column. */
-.release__copy, .biography__copy, .live__intro, .contact__content { container-type: inline-size; }
+.release__copy, .live__intro, .contact__content { container-type: inline-size; }
+
+@media (max-width: 540px) {
+  .biography__text { column-count: 1; }
+}

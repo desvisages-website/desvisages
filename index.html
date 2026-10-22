@@ -14,7 +14,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/apfel-grotezk-mittel.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/aujournuit-variable.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="style.css?v=20261022">
+  <link rel="stylesheet" href="style.css?v=20261022-biography">
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -22,7 +22,7 @@
   <nav class="section-nav" aria-label="Page sections">
     <a href="#home" aria-label="Home" aria-current="location"><span class="section-nav__mark"></span><span class="section-nav__label">Home</span></a>
     <a href="#aleas" aria-label="aleas — music"><span class="section-nav__mark"></span><span class="section-nav__label">aleas</span></a>
-    <a href="#bio" aria-label="Biography"><span class="section-nav__mark"></span><span class="section-nav__label">Bio</span></a>
+    <a href="#bio" aria-label="Biography"><span class="section-nav__mark"></span><span class="section-nav__label">Biography</span></a>
     <a href="#gallery" aria-label="Gallery"><span class="section-nav__mark"></span><span class="section-nav__label">Gallery</span></a>
     <a href="#live" aria-label="Concerts"><span class="section-nav__mark"></span><span class="section-nav__label">Live</span></a>
     <a href="#contact" aria-label="Contact and social links"><span class="section-nav__mark"></span><span class="section-nav__label">Contact</span></a>
@@ -35,7 +35,7 @@
       </picture>
       <h1 id="home-title">DES VISAGES</h1>
       <nav class="hero__links" aria-label="Explore Des Visages">
-        <a href="#aleas">aleas</a><a href="#bio">bio</a><a href="#gallery">gallery</a><a href="#live">live</a><a href="#contact">contact</a>
+        <a href="#aleas">aleas</a><a href="#bio">biography</a><a href="#gallery">gallery</a><a href="#live">live</a><a href="#contact">contact</a>
       </nav>
     </section>
 
@@ -64,17 +64,19 @@
     </section>
 
     <section class="scene biography" id="bio" aria-labelledby="bio-title">
-      <picture class="biography__portrait">
+      <picture class="biography__portrait scene-photo">
         <source media="(max-width: 720px)" srcset="assets/images/bio-small.webp">
         <img src="assets/images/bio.webp" alt="Jorge Care and César Vidal in front of a wall of graffiti." width="1700" height="2179" loading="lazy">
       </picture>
       <article class="biography__copy">
-        <h2 class="display" id="bio-title">Bio</h2>
+        <h2 class="display" id="bio-title">BIOGRAPHY</h2>
+        <div class="biography__text">
         <p>Des Visages is a Europe-based duo formed by Chilean musicians Jorge Care and César Vidal. Working with saxophone and live electronics, they approach improvisation as composition in real time: musical form develops through listening, interaction and the continuous transformation of acoustic and electronic material.</p>
         <p>Prepared saxophone, synthesizers and live processing form the basis of their instrumental practice. Their setup includes controllers and Push 3, alongside Ableton Live, MAX, TouchOSC, Beam and TouchDesigner. Texture, rhythm and the spatial qualities of sound guide the development of each piece.</p>
         <p>Light and image are integral to the performances. Concert lighting, at times responsive to sound, works alongside projection, generated visuals, poetic texts and video mapping. This theatrical dimension extends a practice rooted in electroacoustic music and informed by the dialogue between Peter Evans and Sam Pluta.</p>
         <p>Their self-titled debut EP was recorded and released in Geneva in 2025. It was followed by <em>aleas</em>, recorded in Amsterdam and presented during their 2026 European tour, with concerts in Switzerland, France, the Netherlands, England and Denmark.</p>
         <p>Each performance is shaped by the space, the audience and the decisions the musicians make together.</p>
+        </div>
       </article>
     </section>
 
