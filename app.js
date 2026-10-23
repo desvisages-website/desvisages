@@ -154,6 +154,23 @@
       document.body.classList.add('dialog-open');
     });
   }
+  // aleas videos play in a dialog; the YouTube player loads only when requested.
+  const youtubeDialog = document.querySelector('#youtube-dialog');
+  for (const card of document.querySelectorAll('[data-youtube]')) {
+    card.addEventListener('click', event => {
+      event.preventDefault();
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${card.dataset.youtube}?autoplay=1&rel=0`;
+      iframe.title = `${card.dataset.videoTitle} — Des Visages on YouTube`;
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      document.querySelector('#youtube-title').textContent = card.dataset.videoTitle;
+      document.querySelector('#youtube-slot').replaceChildren(iframe);
+      document.querySelector('#youtube-fallback').href = card.href;
+      youtubeDialog.showModal();
+      document.body.classList.add('dialog-open');
+    });
+  }
   for (const dialog of document.querySelectorAll('dialog')) {
     dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
     dialog.addEventListener('click', event => {
@@ -163,6 +180,7 @@
     dialog.addEventListener('close', () => {
       document.body.classList.remove('dialog-open');
       if (dialog === playerDialog) document.querySelector('#player-slot').replaceChildren();
+      if (dialog === youtubeDialog) document.querySelector('#youtube-slot').replaceChildren();
       if (dialog === videoDialog) {
         const video = videoDialog.querySelector('video');
         video.pause();
