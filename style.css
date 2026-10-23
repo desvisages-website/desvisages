@@ -93,7 +93,8 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; }
 .video-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin: 0; padding: 0; list-style: none; }
 .video-card { display: block; }
 .video-card--record { width: 100%; text-align: left; }
-.video-card--record .video-card__media { background: #fff; }
+/* The EP artwork has a transparent background; show it on black as in the original. */
+.video-card--record .video-card__media { background: #000; }
 .video-card--record .video-card__media img { object-fit: contain; filter: none; }
 .video-card__media { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
 .video-card__media img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.82); transition: transform .8s cubic-bezier(.65, 0, .35, 1), filter .4s; }
