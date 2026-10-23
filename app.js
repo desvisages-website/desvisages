@@ -5,7 +5,15 @@
   const sections = [...document.querySelectorAll('main > section[id]')];
   const sectionLinks = [...document.querySelectorAll('.section-nav a')];
   let framePending = false;
+  // As the second aleas screen rises into view, --mix goes from 0 to 1 and shifts the background towards Biography.
+  const release = document.querySelector('.release');
+  const releaseMore = document.querySelector('.release__more');
+  function updateReleaseColour() {
+    const progress = 1 - releaseMore.getBoundingClientRect().top / window.innerHeight;
+    release.style.setProperty('--mix', Math.min(1, Math.max(0, progress)).toFixed(3));
+  }
   function updateCurrentSection() {
+    updateReleaseColour();
     const marker = window.innerHeight * 0.45;
     let current = sections[0];
     for (const section of sections) {
