@@ -38,21 +38,39 @@
     const parts = dateFormatter.formatToParts(new Date());
     return ['year', 'month', 'day'].map(type => parts.find(part => part.type === type).value).join('-');
   }
+  // Fade the scrolling list's edges only where more dates remain out of view.
+  const eventsList = document.querySelector('.events-list');
+  function updateEventsFade() {
+    const remaining = eventsList.scrollHeight - eventsList.clientHeight - eventsList.scrollTop;
+    eventsList.classList.toggle('fade-top', eventsList.scrollTop > 4);
+    eventsList.classList.toggle('fade-bottom', remaining > 4);
+  }
+  eventsList.addEventListener('scroll', updateEventsFade, { passive: true });
+  window.addEventListener('resize', updateEventsFade, { passive: true });
   function filterEvents(category) {
     const today = todayISO();
     let visibleCount = 0;
     const sorted = [...events].sort((a, b) => category === 'upcoming'
       ? a.dataset.date.localeCompare(b.dataset.date)
       : b.dataset.date.localeCompare(a.dataset.date));
-    const list = document.querySelector('.events-list');
-    for (const event of sorted) {
+    // CSS order keeps each date inside its year group: upcoming runs forward, the archive backward.
+    sorted.forEach((event, index) => {
       const isFuture = event.dataset.date.length === 10
         ? event.dataset.date >= today
         : event.dataset.date >= today.slice(0, event.dataset.date.length);
       event.hidden = (category === 'upcoming') !== isFuture;
+      event.style.order = index;
       if (!event.hidden) visibleCount++;
-      list.append(event);
-    }
+    });
+    const years = [...document.querySelectorAll('.events-year')].sort((a, b) => category === 'upcoming'
+      ? a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent)
+      : b.querySelector('h3').textContent.localeCompare(a.querySelector('h3').textContent));
+    years.forEach((year, index) => {
+      year.hidden = !year.querySelector('.event:not([hidden])');
+      year.style.order = index;
+    });
+    eventsList.scrollTop = 0;
+    updateEventsFade();
     document.querySelector('.events-empty').hidden = visibleCount !== 0;
     for (const filter of eventFilters) {
       const active = filter.dataset.eventFilter === category;
