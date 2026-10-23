@@ -66,6 +66,30 @@
   }
   filterEvents(events.some(event => event.dataset.date.length === 10 && event.dataset.date >= todayISO()) ? 'upcoming' : 'past');
 
+  const copyButton = document.querySelector('[data-copy]');
+  const copyStatus = document.querySelector('.contact__copy-status');
+  let copyTimer;
+  if (copyButton && navigator.clipboard && window.isSecureContext) {
+    copyButton.hidden = false;
+    copyButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(copyButton.dataset.copy);
+        copyStatus.textContent = 'Copied';
+      } catch {
+        // Some embedded browsers block the Clipboard API: select the address instead.
+        const address = document.querySelector('.contact__email').firstChild;
+        const range = document.createRange();
+        range.setStart(address, 0);
+        range.setEnd(address, address.textContent.trimEnd().length);
+        getSelection().removeAllRanges();
+        getSelection().addRange(range);
+        copyStatus.textContent = document.execCommand('copy') ? 'Copied' : 'Address selected';
+      }
+      clearTimeout(copyTimer);
+      copyTimer = setTimeout(() => { copyStatus.textContent = ''; }, 2500);
+    });
+  }
+
   const galleryImages = JSON.parse(document.querySelector('#gallery-data').textContent);
   const photoDialog = document.querySelector('#photo-dialog');
   const videoDialog = document.querySelector('#video-dialog');
