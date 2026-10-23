@@ -77,10 +77,8 @@
         copyStatus.textContent = 'Copied';
       } catch {
         // Some embedded browsers block the Clipboard API: select the address instead.
-        const address = document.querySelector('.contact__email').firstChild;
         const range = document.createRange();
-        range.setStart(address, 0);
-        range.setEnd(address, address.textContent.trimEnd().length);
+        range.selectNodeContents(document.querySelector('.contact__address'));
         getSelection().removeAllRanges();
         getSelection().addRange(range);
         copyStatus.textContent = document.execCommand('copy') ? 'Copied' : 'Address selected';

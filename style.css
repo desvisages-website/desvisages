@@ -118,9 +118,17 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; }
 .contact__channels { container-type: inline-size; }
 .contact__lead .display { font-size: min(140px, 27cqw); margin: 0 0 clamp(40px, 7svh, 72px); }
 .contact__lead .eyebrow { font-size: 12px; opacity: .75; margin-bottom: 16px; }
-.contact__email { display: inline-flex; align-items: baseline; gap: .3em; max-width: 100%; padding-bottom: 12px; border-bottom: 1px solid #fff8; font: 500 min(54px, 8cqw)/1.1 var(--display); letter-spacing: -.025em; transition: border-color .25s; }
-.contact__email .arrow { width: .55em; height: .55em; transition: transform .25s; }
-.contact__email:hover { border-color: var(--white); }
+/* Links fill with paper and turn red on hover, focus and tap; the arrow circle fills and turns to point forward. */
+.contact__email, .contact__row { --pad: 18px; position: relative; isolation: isolate; margin: 0 calc(-1 * var(--pad)); transition: color .3s; }
+.contact__email::before, .contact__row::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--paper); transform: scaleX(0); transform-origin: left; transition: transform .5s cubic-bezier(.65, 0, .35, 1); }
+.contact__email { --pad: 14px; display: inline-flex; align-items: center; gap: .45em; max-width: calc(100% + 2 * var(--pad)); padding: 6px var(--pad) 14px; font: 500 min(54px, 8cqw)/1.1 var(--display); letter-spacing: -.025em; }
+.contact__email::after { content: ''; position: absolute; left: var(--pad); right: var(--pad); bottom: 0; height: 1px; background: #fff8; transition: opacity .3s; }
+.contact__name { transition: transform .5s cubic-bezier(.65, 0, .35, 1); }
+.contact__icon { display: grid; place-items: center; flex-shrink: 0; width: 38px; height: 38px; border: 1px solid #fff8; border-radius: 50%; transition: background-color .3s, border-color .3s, color .3s; }
+.contact__icon .arrow { width: 14px; height: 14px; transition: transform .5s cubic-bezier(.65, 0, .35, 1); }
+.contact__email .contact__icon { width: .8em; height: .8em; }
+.contact__email .contact__icon .arrow { width: .3em; height: .3em; }
+.contact__email:focus-visible, .contact__row:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
 .contact__meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 26px; margin-top: 18px; font-size: 14px; }
 .contact__meta p { opacity: .8; }
 .contact__copy { position: relative; padding: 6px 0; opacity: .8; transition: opacity .2s; }
@@ -133,13 +141,25 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; }
 .contact__group h3 { font-family: var(--body); font-weight: 400; font-size: 12px; opacity: .75; }
 .contact__group ul { list-style: none; margin: 0; padding: 0; }
 .contact__group li + li { border-top: 1px solid #fff2; }
-.contact__row { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 19px 0; }
+.contact__row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 18px; padding: 14px var(--pad); }
 .contact__name { font: 500 clamp(26px, 2.4vw, 38px)/1.1 var(--display); letter-spacing: -.02em; }
-.contact__detail { display: inline-flex; align-items: baseline; gap: 10px; font-size: 14px; white-space: nowrap; opacity: .8; transition: opacity .25s; }
-.contact__detail .arrow, .contact__email .arrow { flex-shrink: 0; }
-.contact__detail .arrow { transition: transform .25s; }
-.contact__row:hover .contact__detail, .contact__row:focus-visible .contact__detail { opacity: 1; }
-.contact__row:hover .arrow, .contact__email:hover .arrow { transform: translate(3px, -3px); }
+.contact__detail { font-size: 14px; white-space: nowrap; opacity: .8; transition: opacity .3s; }
+.contact__email:is(:focus-visible, :active), .contact__row:is(:focus-visible, :active) { color: var(--red); }
+.contact__email:is(:focus-visible, :active)::before, .contact__row:is(:focus-visible, :active)::before { transform: none; }
+.contact__email:is(:focus-visible, :active)::after { opacity: 0; }
+.contact__row:is(:focus-visible, :active) .contact__name { transform: translateX(10px); }
+.contact__row:is(:focus-visible, :active) .contact__detail { opacity: 1; }
+.contact__email:is(:focus-visible, :active) .contact__icon, .contact__row:is(:focus-visible, :active) .contact__icon { background: var(--red); border-color: var(--red); color: var(--white); }
+.contact__email:is(:focus-visible, :active) .arrow, .contact__row:is(:focus-visible, :active) .arrow { transform: rotate(45deg); }
+@media (hover: hover) {
+  .contact__email:hover, .contact__row:hover { color: var(--red); }
+  .contact__email:hover::before, .contact__row:hover::before { transform: none; }
+  .contact__email:hover::after { opacity: 0; }
+  .contact__row:hover .contact__name { transform: translateX(10px); }
+  .contact__row:hover .contact__detail { opacity: 1; }
+  .contact__email:hover .contact__icon, .contact__row:hover .contact__icon { background: var(--red); border-color: var(--red); color: var(--white); }
+  .contact__email:hover .arrow, .contact__row:hover .arrow { transform: rotate(45deg); }
+}
 .contact__back { grid-column: 2; justify-self: start; display: inline-flex; align-items: baseline; gap: 10px; font-size: 14px; margin-top: 36px; padding: 6px 0; opacity: .7; transition: opacity .2s; }
 .contact__back:hover, .contact__back:focus-visible { opacity: 1; }
 .contact__back span { font-size: 18px; }
@@ -223,9 +243,15 @@ dialog::backdrop { background: #0b0c0bf0; }
   .event div > span { font-size: 11px; }
   .contact { gap: 46px; padding: 90px 60px 65px 24px; }
   .contact__lead .display { font-size: min(90px, 23cqw); margin: 25px 0 30px; }
-  .contact__email { font-size: min(40px, 8.8cqw); padding-bottom: 10px; }
+  .contact__email { font-size: min(40px, 8cqw); padding-bottom: 12px; }
   .contact__meta { font-size: 13px; gap: 4px 22px; }
-  .contact__row { flex-direction: column; align-items: flex-start; gap: 4px; padding: 10px 0 14px; }
+  .contact__email, .contact__row { --pad: 12px; }
+  .contact__row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'name icon' 'detail icon'; gap: 4px 16px; padding: 10px var(--pad) 14px; }
+  .contact__name { grid-area: name; }
+  .contact__detail { grid-area: detail; }
+  .contact__icon { grid-area: icon; width: 36px; height: 36px; }
+  .contact__email .contact__icon { width: 30px; height: 30px; }
+  .contact__email .contact__icon .arrow { width: 12px; height: 12px; }
   .contact__name { font-size: 26px; }
   .contact__back { margin-top: -22px; }
   .eyebrow { font-size: 11px; }
@@ -244,7 +270,7 @@ dialog::backdrop { background: #0b0c0bf0; }
   .release__copy .display { font-size: 110px; margin: 10px 0 18px; }
   .release__cover, .discography { max-width: 300px; }
   .contact__lead .display { font-size: 80px; margin-bottom: 32px; }
-  .contact__row { padding: 13px 0; }
+  .contact__row { padding: 10px var(--pad); }
   .contact__name { font-size: 28px; }
   .live__intro h2 { font-size: 140px; }
 }
