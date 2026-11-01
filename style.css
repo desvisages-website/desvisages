@@ -123,17 +123,26 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; }
 
 .biography { background: #11170f; color: var(--white); height: 100svh; min-height: 0; overflow: clip; padding: clamp(18px, 4svh, 48px) 8vw clamp(18px, 4svh, 48px) 6vw; display: flex; align-items: flex-end; }
 /* A small zoom fills the frame; the upper crop keeps both faces above the copy. */
-.biography__portrait { isolation: isolate; }
-.biography__portrait img { object-position: 50% calc(6svh - max(18vw, 24svh)); transform: scale(1.08); }
-.biography__portrait::after { content: ''; position: absolute; inset: 0; background: url(assets/images/biography-grain.svg) repeat; background-size: 192px 192px; mix-blend-mode: soft-light; opacity: .2; pointer-events: none; }
+.biography__portrait img { object-position: 50% calc(6svh - max(16vw, 24svh)); transform: scale(1.08); }
 .biography::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #090e0844 45%, #090e08c7 68%, #090e08f5 100%); pointer-events: none; }
-.biography__copy { --bio-columns: 3; --bio-gap: 3.5vw; position: relative; z-index: 1; width: 100%; min-width: 0; container-type: inline-size; column-count: var(--bio-columns); column-gap: var(--bio-gap); column-fill: balance; font: 400 clamp(16px, 1.9svh, 20px)/1.42 'Anderson Grotesk', Arial, sans-serif; font-variation-settings: normal; text-align: justify; text-align-last: left; text-justify: inter-word; orphans: 1; widows: 1; text-shadow: 0 1px 10px #0009; }
+.biography__copy { --bio-columns: 3; --bio-gap: 3.5vw; position: relative; z-index: 1; width: 100%; min-width: 0; container-type: inline-size; column-count: var(--bio-columns); column-gap: var(--bio-gap); column-fill: balance; font: 400 round(down, clamp(16px, 1.9svh, 20px), 1px)/1.42 'Anderson Grotesk', Arial, sans-serif; font-variation-settings: normal; text-align: justify; text-align-last: left; text-justify: inter-word; orphans: 1; widows: 1; text-shadow: 0 1px 10px #0009; }
 .biography__copy h2 { font-size: calc((100cqw - (var(--bio-columns) - 1) * var(--bio-gap)) / var(--bio-columns) * .187); line-height: .9; letter-spacing: 0; margin: 0 0 14px; break-inside: avoid; }
-.biography__title { display: flex; justify-content: space-between; width: 100%; }
+.biography__title { display: flex; justify-content: space-between; width: calc(100% + .05em); transform: translate(-.05em, -.07em); }
 .biography__text { display: contents; }
-.biography__copy p { display: inline; margin: 0; font: inherit; hyphens: none; }
+.biography__copy p { display: block; margin: 0 0 8px; font: inherit; hyphens: none; }
+.biography__copy em { line-height: 0; }
 .biography__copy p:last-child { margin-bottom: 0; }
 .biography__text:focus-visible { outline: 1px solid #fff9; outline-offset: 5px; }
+
+/* Keep genuine paragraph breaks with a fixed gap; only words continuing into
+   another column are split. No spare height is distributed between paragraphs. */
+.biography__copy--balanced { column-count: auto; }
+.biography__columns { display: grid; grid-template-columns: repeat(var(--bio-columns), minmax(0, 1fr)); gap: var(--bio-gap); }
+.biography__column { min-width: 0; }
+.biography__column-text { display: flex; flex-direction: column; gap: 8px; }
+.biography__column-text p { margin: 0; }
+.biography__column-text .continues { text-align-last: justify; }
+.biography__measure { position: absolute; left: 0; top: 0; width: 100%; visibility: hidden; pointer-events: none; }
 
 .scene-photo { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .scene-photo img { width: 100%; height: 100%; object-fit: cover; }
@@ -430,7 +439,7 @@ dialog::backdrop { background: #0b0c0bf0; }
 @media (min-width: 541px) and (max-height: 500px) {
   .biography { padding: 14px 44px 14px 24px; }
   .biography .biography__portrait { height: 100%; }
-  .biography__portrait img { object-position: 50% calc(6svh - max(18vw, 24svh)); transform: scale(1.04); }
+  .biography__portrait img { object-position: 50% calc(6svh - max(16vw, 24svh)); transform: scale(1.04); }
   .biography::after { background: linear-gradient(to bottom, transparent 24%, #090e0877 45%, #090e08e6 75%, #090e08f5 100%); }
   .biography__copy h2 { font-size: clamp(30px, 5vw, 42px); margin-bottom: 8px; }
   .biography__copy { --bio-columns: 1; display: flex; flex-direction: column; max-height: 44%; }
