@@ -14,7 +14,7 @@
   <link rel="icon" href="assets/favicon.svg?v=20261023-dv" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/apfel-grotezk-mittel.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/aujournuit-variable.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="style.css?v=20261101-biography">
+  <link rel="stylesheet" href="style.css?v=20261101-biography-expanded">
   <script src="app.js?v=20261024-aleas2" defer></script>
 </head>
 <body>
@@ -88,15 +88,17 @@
 
     <section class="scene biography" id="bio" aria-labelledby="bio-title">
       <picture class="biography__portrait scene-photo">
-        <source media="(max-width: 720px)" srcset="assets/images/biography-small.webp">
-        <img src="assets/images/biography.webp" alt="Jorge Care and César Vidal standing inside an industrial building." width="2517" height="1881" loading="lazy">
+        <source media="(max-width: 720px)" srcset="assets/images/biography-small.webp?v=20261101-hq">
+        <img src="assets/images/biography.webp?v=20261101-hq" alt="Jorge Care and César Vidal standing inside an industrial building." width="2517" height="1881" loading="lazy">
       </picture>
       <article class="biography__copy">
         <h2 class="display" id="bio-title">BIOGRAPHY</h2>
-        <div class="biography__text">
+        <div class="biography__text" role="region" aria-labelledby="bio-title" tabindex="0">
           <p>Des Visages is an experimental music duo formed by Chilean musicians Jorge Care (live electronics) and César Vidal (saxophone). Based in Europe, the duo works with improvisation and electroacoustic music, combining prepared saxophone, synthesizers and live sound processing.</p>
-          <p>Their music is developed during each performance through direct interaction between the two musicians, taking into account the acoustics of the venue and the audience. Their concerts also incorporate lighting, video projection, generated visuals, poetic texts and video mapping, with some lighting controlled by sound in real time.</p>
-          <p>The duo’s self-titled debut EP was recorded and released in Geneva in 2025, and was also presented at the city’s Fête de la Musique. It was followed by <em>aleas</em>, recorded in Amsterdam and presented during their 2026 European tour, with concerts in Switzerland, France, the Netherlands, England and Denmark.</p>
+          <p>Their instrumental setup includes synthesizers, controllers and Push 3, alongside Ableton Live, Max, TouchOSC, Beam and TouchDesigner. Acoustic sound and electronic processing are developed together during each performance, through direct interaction between the two musicians.</p>
+          <p>Their concerts are improvised, with the acoustics of the venue and the presence of an audience influencing how the music develops. The project also incorporates concert lighting, video projection, generated visuals, poetic texts and video mapping. Some lighting is controlled by sound in real time.</p>
+          <p>In 2025, Des Visages recorded their self-titled debut EP at HEM in Geneva, Switzerland. The EP features three original pieces and was recorded, mixed and mastered by Samuel Albert. It was released that year and also presented at the city’s Fête de la Musique.</p>
+          <p>It was followed by <em>aleas</em>, recorded in 2026 at Dijktheater in Amsterdam and presented during the duo’s European tour that year, with concerts in Switzerland, France, the Netherlands, England and Denmark.</p>
         </div>
       </article>
     </section>
