@@ -1,6 +1,6 @@
 # Biography fonts
 
-The owner selected **Anderson Grotesk Regular** for the biography body after the screenshot comparison. Its Regular and Oblique cuts are now self-hosted and active in Biography and Contact secondary text. Titles, email and primary contact link names retain Apfel Grotezk Mittel; other sections keep Aujournuit. Anderson Bold, Miedinger and Swansea remain inactive comparison assets.
+The owner selected **Anderson Grotesk Regular** for the biography body after the screenshot comparison. Its Regular and Oblique cuts are now self-hosted and active in Biography, Gallery secondary text/dialogs and Contact secondary text. Titles, email and primary contact link names retain Apfel Grotezk Mittel; other sections keep Aujournuit. Anderson Bold, Miedinger and Swansea remain inactive comparison assets.
 
 The comparison renders Miedinger Book, Swansea Regular and Anderson Grotesk Regular at the same viewport, point size, line height and paragraph justification, changing only the biography body font. The Apfel Grotezk Mittel heading and photograph stay unchanged. These first comparisons use the regular/book cuts only. All three regular cuts cover every character in the current biography.
 
