@@ -272,6 +272,8 @@
     imageIndex = (index + galleryImages.length) % galleryImages.length;
     const selected = galleryImages[imageIndex];
     const image = document.querySelector('#photo-full');
+    image.width = selected.width;
+    image.height = selected.height;
     image.src = selected.src;
     image.alt = selected.alt;
     document.querySelector('#photo-caption').textContent = selected.caption;
