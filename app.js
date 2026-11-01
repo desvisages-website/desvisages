@@ -277,15 +277,24 @@
     document.querySelector('#photo-caption').textContent = selected.caption;
     document.querySelector('#photo-counter').textContent = `${imageIndex + 1} / ${galleryImages.length}`;
   }
+  function openGallery(dialog, trigger) {
+    const origin = trigger.getBoundingClientRect();
+    document.body.classList.add('dialog-open');
+    dialog.showModal();
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const bounds = dialog.getBoundingClientRect();
+    dialog.style.transformOrigin = `${origin.left + origin.width / 2 - bounds.left}px ${origin.top + origin.height / 2 - bounds.top}px`;
+    dialog.animate([
+      { opacity: 0, transform: 'scale(.08)', borderRadius: '24px' },
+      { opacity: 1, transform: 'scale(1)', borderRadius: '0' }
+    ], { duration: 440, easing: 'cubic-bezier(.22, 1, .36, 1)' });
+  }
   for (const button of document.querySelectorAll('[data-gallery-open]')) {
     button.addEventListener('click', () => {
       if (button.dataset.galleryOpen === 'photos') {
         displayImage(0);
-        photoDialog.showModal();
-      } else {
-        videoDialog.showModal();
-      }
-      document.body.classList.add('dialog-open');
+        openGallery(photoDialog, button);
+      } else openGallery(videoDialog, button);
     });
   }
   document.querySelector('#photo-previous').addEventListener('click', () => displayImage(imageIndex - 1));
@@ -337,6 +346,9 @@
     });
     dialog.addEventListener('close', () => {
       document.body.classList.remove('dialog-open');
+      if (dialog === photoDialog || dialog === videoDialog) {
+        for (const animation of dialog.getAnimations()) animation.cancel();
+      }
       if (dialog === playerDialog) document.querySelector('#player-slot').replaceChildren();
       if (dialog === youtubeDialog) document.querySelector('#youtube-slot').replaceChildren();
       if (dialog === videoDialog) {
