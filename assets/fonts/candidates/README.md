@@ -1,6 +1,6 @@
-# Biography font candidates — not active on the website
+# Biography fonts
 
-These files are staged for the owner's screenshot comparison only. The published HTML and CSS still use Aujournuit for the biography; do not change the live font until the owner selects one.
+The owner selected **Anderson Grotesk Regular** for the biography body after the screenshot comparison. Its Regular and Oblique cuts are now self-hosted and active only in Biography. Titles remain Apfel Grotezk Mittel, and other sections keep Aujournuit. Anderson Bold, Miedinger and Swansea remain inactive comparison assets.
 
 The comparison renders Miedinger Book, Swansea Regular and Anderson Grotesk Regular at the same viewport, point size, line height and paragraph justification, changing only the biography body font. The Apfel Grotezk Mittel heading and photograph stay unchanged. These first comparisons use the regular/book cuts only. All three regular cuts cover every character in the current biography.
 

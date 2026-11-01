@@ -1,5 +1,7 @@
 @font-face { font-family: 'Apfel Grotezk'; src: url(assets/fonts/apfel-grotezk-mittel.woff2) format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Aujournuit'; src: url(assets/fonts/aujournuit-variable.ttf) format('truetype'); font-weight: 400; font-stretch: 50% 200%; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Anderson Grotesk'; src: url(assets/fonts/candidates/anderson-grotesk/AndersonGroteskRegular.otf) format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Anderson Grotesk'; src: url(assets/fonts/candidates/anderson-grotesk/AndersonGroteskOblique.otf) format('opentype'); font-weight: 400; font-style: italic; font-display: swap; }
 :root {
   --red: #b9070a;
   --ink: #191b16;
@@ -121,14 +123,24 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; }
 
 .biography { background: #11170f; color: var(--white); height: 100svh; min-height: 0; overflow: clip; padding: clamp(18px, 4svh, 48px) 8vw clamp(18px, 4svh, 48px) 6vw; display: flex; align-items: flex-end; }
 /* A small zoom fills the frame; the upper crop keeps both faces above the copy. */
+.biography__portrait { isolation: isolate; }
 .biography__portrait img { object-position: 50% calc(6svh - max(18vw, 24svh)); transform: scale(1.08); }
+.biography__portrait::after { content: ''; position: absolute; inset: 0; background: url(assets/images/biography-grain.svg) repeat; background-size: 192px 192px; mix-blend-mode: soft-light; opacity: .2; pointer-events: none; }
 .biography::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #090e0844 45%, #090e08c7 68%, #090e08f5 100%); pointer-events: none; }
-.biography__copy { position: relative; z-index: 1; width: 100%; min-width: 0; text-shadow: 0 1px 10px #0009; }
-.biography__copy h2 { font-size: clamp(38px, 4.5vw, 8svh); margin: 0 0 clamp(12px, 2svh, 22px); }
-.biography__text { column-count: 3; column-gap: 3.5vw; }
-.biography__text p { margin: 0 0 .8em; font-size: clamp(16px, 1.9svh, 20px); line-height: 1.5; text-align: justify; text-align-last: left; text-justify: inter-word; hyphens: auto; orphans: 2; widows: 2; }
-.biography__text p:last-child { margin-bottom: 0; }
+.biography__copy { --bio-columns: 3; --bio-gap: 3.5vw; position: relative; z-index: 1; width: 100%; min-width: 0; container-type: inline-size; column-count: var(--bio-columns); column-gap: var(--bio-gap); text-shadow: 0 1px 10px #0009; }
+.biography__copy h2 { font-size: calc((100cqw - (var(--bio-columns) - 1) * var(--bio-gap)) / var(--bio-columns) * .187); line-height: .9; letter-spacing: 0; margin: 0 0 14px; break-inside: avoid; }
+.biography__title { display: flex; justify-content: space-between; width: 100%; }
+.biography__text { display: contents; }
+.biography__copy p { margin: 0 0 .7em; font: 400 clamp(16px, 1.9svh, 20px)/1.42 'Anderson Grotesk', Arial, sans-serif; font-variation-settings: normal; text-align: justify; text-align-last: left; text-justify: inter-word; hyphens: none; orphans: 2; widows: 2; }
+.biography__copy p:last-child { margin-bottom: 0; }
 .biography__text:focus-visible { outline: 1px solid #fff9; outline-offset: 5px; }
+.biography__copy--balanced { column-count: auto; }
+.biography__columns { display: grid; grid-template-columns: repeat(var(--bio-columns), minmax(0, 1fr)); gap: var(--bio-gap); align-items: stretch; }
+.biography__column { display: flex; flex-direction: column; min-width: 0; }
+.biography__column-copy { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+.biography__column-copy p { margin: 0; }
+.biography__measure { position: absolute; left: 0; top: 0; visibility: hidden; pointer-events: none; }
+.biography__word { white-space: nowrap; }
 
 .scene-photo { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .scene-photo img { width: 100%; height: 100%; object-fit: cover; }
@@ -280,7 +292,7 @@ dialog::backdrop { background: #0b0c0bf0; }
   .video-cards { gap: 20px; }
   .video-card__title { font-size: 21px; }
   .biography { padding-left: 5vw; }
-  .biography__text { column-count: 2; column-gap: 4vw; }
+  .biography__copy { --bio-columns: 2; --bio-gap: 4vw; }
   .live { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 28px; }
   .live__intro { margin-top: 0; }
   .live::after { background: linear-gradient(to bottom, #05050566, #050505d9 34%, #050505eb); }
@@ -334,8 +346,8 @@ dialog::backdrop { background: #0b0c0bf0; }
   .biography .biography__portrait { height: min(46svh, 94vw); }
   .biography__portrait img { object-position: 50% calc(18px - min(11svh, 22.5vw)); transform: scale(1.06); }
   .biography::after { background: linear-gradient(to bottom, transparent 8svh, #11170f44 20svh, #11170ff5 min(36svh, 76vw), #11170f min(40svh, 80vw)); }
-  .biography__copy h2 { font-size: clamp(30px, 7vw, 46px); margin: 0 0 12px; }
-  .biography__text p { font-size: clamp(15px, 1.9svh, 17px); font-variation-settings: 'wdth' 75; line-height: 1.42; }
+  .biography__copy h2 { margin: 0 0 12px; }
+  .biography__copy p { font-size: clamp(15px, 1.9svh, 17px); line-height: 1.38; }
   .gallery { padding: 85px 60px 70px 24px; }
   .gallery__background img { object-position: 42% center; }
   .gallery__content h2 { font-size: min(85px, 23vw); }
@@ -406,7 +418,7 @@ dialog::backdrop { background: #0b0c0bf0; }
 .release__copy, .live__intro, .contact__lead { container-type: inline-size; }
 
 @media (max-width: 540px) {
-  .biography__text { column-count: 1; }
+  .biography__copy { --bio-columns: 1; }
 }
 
 @media (min-width: 721px) and (max-aspect-ratio: 1 / 1) {
@@ -418,7 +430,7 @@ dialog::backdrop { background: #0b0c0bf0; }
 @media (max-width: 540px) {
   .biography__copy { display: flex; flex-direction: column; max-height: 68%; }
   .biography__copy h2 { flex: 0 0 auto; }
-  .biography__text { min-height: 0; column-count: auto; overflow-x: hidden; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: thin; scrollbar-color: #fff6 transparent; scrollbar-gutter: stable; padding-right: 8px; }
+  .biography__text { display: block; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: thin; scrollbar-color: #fff6 transparent; scrollbar-gutter: stable; padding-right: 8px; }
 }
 
 @media (min-width: 541px) and (max-height: 500px) {
@@ -426,20 +438,18 @@ dialog::backdrop { background: #0b0c0bf0; }
   .biography .biography__portrait { height: 100%; }
   .biography__portrait img { object-position: 50% calc(6svh - max(18vw, 24svh)); transform: scale(1.04); }
   .biography::after { background: linear-gradient(to bottom, transparent 24%, #090e0877 45%, #090e08e6 75%, #090e08f5 100%); }
-  .biography__copy h2 { font-size: 30px; margin-bottom: 8px; }
-  .biography__copy { display: flex; flex-direction: column; max-height: 44%; }
+  .biography__copy h2 { font-size: clamp(30px, 5vw, 42px); margin-bottom: 8px; }
+  .biography__copy { --bio-columns: 1; display: flex; flex-direction: column; max-height: 44%; }
   .biography__copy h2 { flex: 0 0 auto; }
-  .biography__text { min-height: 0; column-count: auto; overflow-x: hidden; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: thin; scrollbar-color: #fff6 transparent; scrollbar-gutter: stable; padding-right: 8px; }
-  .biography__text p { font-size: 15px; font-variation-settings: 'wdth' 85; line-height: 1.4; margin-bottom: .7em; }
+  .biography__text { display: block; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: thin; scrollbar-color: #fff6 transparent; scrollbar-gutter: stable; padding-right: 8px; }
+  .biography__copy p { font-size: 15px; line-height: 1.35; margin-bottom: .7em; }
 }
 
 @media (min-width: 721px) and (min-height: 501px) and (max-height: 700px) {
-  .biography__text p { font-size: 15px; font-variation-settings: 'wdth' 75; line-height: 1.35; margin-bottom: .7em; }
+  .biography__copy p { font-size: 15px; line-height: 1.3; margin-bottom: .7em; }
 }
 
 @media (min-width: 1051px) and (min-height: 501px) and (min-aspect-ratio: 5 / 2) {
-  .biography__copy { width: 65%; }
-  .biography__copy h2 { font-size: 42px; }
-  .biography__text { column-count: 2; }
-  .biography__text p { font-size: 14px; font-variation-settings: 'wdth' 65; line-height: 1.3; margin-bottom: .65em; }
+  .biography__copy { --bio-columns: 2; width: 65%; }
+  .biography__copy p { font-size: 14px; line-height: 1.25; margin-bottom: .65em; }
 }
