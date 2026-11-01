@@ -37,6 +37,156 @@
   window.addEventListener('pageshow', updateCurrentSection);
   updateCurrentSection();
 
+  // Typeset the approved paragraphs into equal columns with a fixed 8px gap.
+  // Adjust word breaks and the heading's space, never stretch paragraph gaps.
+  const biography = document.querySelector('.biography__copy');
+  const biographySource = biography.querySelector('.biography__text');
+  const biographyTitle = biography.querySelector('h2');
+  const biographyParagraphs = [...biographySource.querySelectorAll('p')];
+  const biographyWords = biographyParagraphs.map(p => p.textContent.trim().split(/\s+/));
+  const biographyEnds = [];
+  biographyWords.reduce((offset, words) => {
+    biographyEnds.push(offset + words.length);
+    return offset + words.length;
+  }, 0);
+  const biographyFlatWords = biographyWords.flat();
+  const biographyCanvas = document.createElement('canvas').getContext('2d');
+
+  function biographyFragments(start, end) {
+    let offset = 0;
+    return biographyWords.flatMap((words, paragraph) => {
+      const lo = Math.max(0, start - offset);
+      const hi = Math.min(words.length, end - offset);
+      offset += words.length;
+      return hi > lo ? [{ paragraph, words: words.slice(lo, hi), continues: hi < words.length }] : [];
+    });
+  }
+
+  function biographyColumn(fragments) {
+    const column = document.createElement('div');
+    column.className = 'biography__column';
+    const text = document.createElement('div');
+    text.className = 'biography__column-text';
+    for (const fragment of fragments) {
+      const p = document.createElement('p');
+      if (fragment.continues) p.className = 'continues';
+      const copy = fragment.words.join(' ');
+      const emphasis = biographyParagraphs[fragment.paragraph].querySelector('em')?.textContent;
+      if (emphasis && copy.includes(emphasis)) {
+        const at = copy.indexOf(emphasis);
+        const em = document.createElement('em');
+        em.textContent = emphasis;
+        p.append(copy.slice(0, at), em, copy.slice(at + emphasis.length));
+      } else p.textContent = copy;
+      text.append(p);
+    }
+    column.append(text);
+    return column;
+  }
+
+  function layoutBiography() {
+    biography.insertBefore(biographyTitle, biographySource);
+    biography.querySelector('.biography__columns')?.remove();
+    biography.classList.remove('biography__copy--balanced');
+    biography.style.removeProperty('font-size');
+    biographyTitle.style.removeProperty('margin-bottom');
+    biographySource.hidden = false;
+    const css = getComputedStyle(biography);
+    const count = Number(css.getPropertyValue('--bio-columns'));
+    if (count < 2) return;
+
+    const baseSize = parseFloat(css.fontSize);
+    const ratio = parseFloat(css.lineHeight) / baseSize;
+    const gap = parseFloat(css.columnGap);
+    const width = (biography.getBoundingClientRect().width - (count - 1) * gap) / count;
+    const titleHeight = biographyTitle.getBoundingClientRect().height;
+    const measure = document.createElement('div');
+    measure.className = 'biography__columns biography__measure';
+    measure.setAttribute('aria-hidden', 'true');
+    measure.style.lineHeight = ratio;
+    const sample = biographyColumn([{ paragraph: 0, words: ['Des'], continues: false }]);
+    measure.append(sample);
+    biography.append(measure);
+    const candidates = [];
+
+    // Word widths make this search inexpensive; final candidates are checked
+    // against the browser's actual paragraph layout before being displayed.
+    for (let step = -25; step <= 25; step++) {
+      const size = Math.round((baseSize + step / 10) * 10) / 10;
+      if (size < 14) continue;
+      measure.style.fontSize = `${size}px`;
+      const leading = sample.getBoundingClientRect().height;
+      const normal = `400 ${size}px ${css.fontFamily}`;
+      biographyCanvas.font = normal;
+      const space = biographyCanvas.measureText(' ').width;
+      const widths = biographyFlatWords.map(word => {
+        biographyCanvas.font = word.includes('aleas') ? `italic ${normal}` : normal;
+        return biographyCanvas.measureText(word).width;
+      });
+      const cache = new Map();
+      function height(start, end) {
+        const key = `${start}:${end}`;
+        if (cache.has(key)) return cache.get(key);
+        let offset = 0, lines = 0, paragraphs = 0, lastWidth = 0;
+        for (const words of biographyWords) {
+          const lo = Math.max(start, offset), hi = Math.min(end, offset + words.length);
+          offset += words.length;
+          if (lo >= hi) continue;
+          paragraphs++;
+          let line = 0;
+          for (let i = lo; i < hi; i++) {
+            if (line && line + space + widths[i] > width) { lines++; line = widths[i]; }
+            else line = line ? line + space + widths[i] : widths[i];
+          }
+          lines++; lastWidth = line;
+        }
+        const value = { height: lines * leading + (paragraphs - 1) * 8, lastWidth };
+        cache.set(key, value);
+        return value;
+      }
+      const last = biographyFlatWords.length;
+      for (let split = biographyEnds[0]; split < biographyEnds[2]; split++) {
+        const breaks = count === 3 ? [0, split, biographyEnds[2], last] : [0, split, last];
+        if (count === 3 && split >= biographyEnds[1]) continue;
+        const blocks = breaks.slice(0, -1).map((start, i) => height(start, breaks[i + 1]));
+        const target = blocks.slice(1).reduce((sum, b) => sum + b.height, 0) / (count - 1);
+        const margin = target - blocks[0].height - titleHeight;
+        const spread = Math.max(...blocks.slice(1).map(b => b.height)) - Math.min(...blocks.slice(1).map(b => b.height));
+        const outside = Math.max(0, -margin, margin - Math.max(24, size * 1.4));
+        const cost = spread * 10 + outside * 10 + Math.abs(size - baseSize) * 8
+          + Math.abs(margin - size / 2) * .1 + (1 - blocks[0].lastWidth / width);
+        candidates.push({ size, breaks, cost });
+      }
+    }
+    candidates.sort((a, b) => a.cost - b.cost);
+    for (const candidate of candidates) {
+      measure.style.fontSize = `${candidate.size}px`;
+      measure.replaceChildren(...candidate.breaks.slice(0, -1).map((start, i) =>
+        biographyColumn(biographyFragments(start, candidate.breaks[i + 1]))));
+      const heights = [...measure.children].map(c => c.firstElementChild.getBoundingClientRect().height);
+      const spread = Math.max(...heights.slice(1)) - Math.min(...heights.slice(1));
+      const margin = heights[1] - heights[0] - titleHeight;
+      if (spread > .1 || margin < 0 || margin > Math.max(24, candidate.size * 1.4)) continue;
+      biography.style.fontSize = `${candidate.size}px`;
+      biographyTitle.style.marginBottom = `${margin}px`;
+      measure.firstElementChild.prepend(biographyTitle);
+      measure.classList.remove('biography__measure');
+      measure.removeAttribute('aria-hidden');
+      measure.style.removeProperty('font-size');
+      measure.style.removeProperty('line-height');
+      biographySource.hidden = true;
+      biography.classList.add('biography__copy--balanced');
+      return;
+    }
+    measure.remove(); // Natural columns remain readable if an unusual size cannot fit.
+  }
+  let biographyResize;
+  window.addEventListener('resize', () => {
+    clearTimeout(biographyResize);
+    biographyResize = setTimeout(layoutBiography, 120);
+  }, { passive: true });
+  document.fonts.ready.then(layoutBiography);
+
   const eventFilters = [...document.querySelectorAll('[data-event-filter]')];
   const events = [...document.querySelectorAll('.event[data-date]')];
   const dateFormatter = new Intl.DateTimeFormat('en-CA', {
