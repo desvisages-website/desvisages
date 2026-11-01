@@ -279,7 +279,7 @@ dialog::backdrop { background: #0b0c0bf0; }
 @keyframes gallery-backdrop-in { from { background-color: transparent; } to { background-color: #0b0c0bf0; } }
 @media (prefers-reduced-motion: reduce) { #photo-dialog::backdrop, #video-dialog::backdrop { animation: none !important; } }
 .lightbox figure > img { width: 100%; height: calc(96svh - 176px); object-fit: contain; }
-.lightbox figcaption { font-size: 13px; padding-top: 14px; opacity: .65; }
+
 .lightbox__navigation { display: flex; justify-content: center; align-items: center; gap: 45px; padding-top: 18px; }
 .lightbox__navigation button { font-size: 28px; min-width: 44px; min-height: 44px; }
 .lightbox__navigation span { font-size: 12px; opacity: .6; }
@@ -397,7 +397,7 @@ dialog::backdrop { background: #0b0c0bf0; }
   dialog { max-width: calc(100vw - 24px); max-height: 94svh; }
   .lightbox { padding: 56px 12px 16px; width: calc(100vw - 24px); }
   .lightbox figure > img { height: calc(96svh - 176px); }
-  .lightbox figcaption { font-size: 11px; }
+
   .player-dialog { padding: 65px 23px 25px; }
   .player-dialog iframe { height: 390px; }
   .video-dialog { padding: 65px 20px 25px; }

@@ -276,7 +276,6 @@
     image.height = selected.height;
     image.src = selected.src;
     image.alt = selected.alt;
-    document.querySelector('#photo-caption').textContent = selected.caption;
     document.querySelector('#photo-counter').textContent = `${imageIndex + 1} / ${galleryImages.length}`;
   }
   function openGallery(dialog, trigger) {
