@@ -122,8 +122,8 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; }
 }
 
 .biography { background: #11170f; color: var(--white); height: 100svh; min-height: 0; overflow: clip; padding: clamp(18px, 4svh, 48px) 8vw clamp(18px, 4svh, 48px) 6vw; display: flex; align-items: flex-end; }
-/* A small zoom fills the frame; the upper crop keeps both faces above the copy. */
-.biography__portrait img { object-position: 50% calc(6svh - max(16vw, 24svh)); transform: scale(1.08); }
+/* Preserve the complete horizontal frame; only the vertical crop moves the faces. */
+.biography .biography__portrait img { position: absolute; left: 0; top: calc(5svh - 16vw); width: 100%; height: auto; max-width: none; object-fit: contain; object-position: center top; transform: none; mask-image: linear-gradient(to bottom, #000 85%, transparent); }
 .biography::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, #090e0844 45%, #090e08c7 68%, #090e08f5 100%); pointer-events: none; }
 .biography__copy { --bio-columns: 3; --bio-gap: 3.5vw; position: relative; z-index: 1; width: 100%; min-width: 0; container-type: inline-size; column-count: var(--bio-columns); column-gap: var(--bio-gap); column-fill: balance; font: 400 round(down, clamp(16px, 1.9svh, 20px), 1px)/1.42 'Anderson Grotesk', Arial, sans-serif; font-variation-settings: normal; text-align: justify; text-align-last: left; text-justify: inter-word; orphans: 1; widows: 1; text-shadow: 0 1px 10px #0009; }
 .biography__copy h2 { font-size: calc((100cqw - (var(--bio-columns) - 1) * var(--bio-gap)) / var(--bio-columns) * .187); line-height: .9; letter-spacing: 0; margin: 0 0 14px; break-inside: avoid; }
@@ -207,37 +207,42 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; }
 .events-empty a { font-size: 17px; display: inline-block; border-bottom: 1px solid; margin-top: 20px; }
 
 /* Email first; channels grouped by purpose, with Bandcamp last. */
-.contact { background: var(--red); padding: 100px 11vw 90px 8vw; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-content: center; align-items: end; gap: 0 7vw; }
+.contact { --red: #d80108; isolation: isolate; background: var(--red); padding: 100px 11vw 90px 8vw; display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); align-content: center; align-items: end; gap: 0 14vw; font: 400 16px/1.45 'Anderson Grotesk', Arial, sans-serif; font-variation-settings: normal; }
+.contact__portrait { position: absolute; z-index: 0; left: 50%; top: 50%; width: min(70vw, calc(100svh * 3014 / 4516)); aspect-ratio: 3014 / 4516; transform: translate(-50%, -50%); pointer-events: none; }
+.contact__portrait img { width: 100%; height: 100%; object-fit: contain; mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(to bottom, transparent, #000 6%, #000 94%, transparent); mask-composite: intersect; }
+.contact__lead, .contact__channels, .contact__back { position: relative; z-index: 1; }
+.contact .eyebrow { font-size: 11px; letter-spacing: .14em; }
 .contact__lead, .contact__channels { min-width: 0; }
 .contact__channels { container-type: inline-size; }
-.contact__lead .display { font-size: min(140px, 27cqw); margin: 0 0 clamp(40px, 7svh, 72px); }
-.contact__lead .eyebrow { font-size: 12px; opacity: .75; margin-bottom: 16px; }
+.contact__lead .display { font-size: min(118px, 24cqw); margin: 0 0 clamp(32px, 5svh, 54px); }
+.contact__lead .eyebrow { opacity: .85; margin-bottom: 12px; }
 /* Links fill with paper and turn red on hover, focus and tap; the arrow circle fills and turns to point forward. */
 .contact__email, .contact__row { --pad: 18px; position: relative; isolation: isolate; margin: 0 calc(-1 * var(--pad)); transition: color .3s; }
 .contact__email::before, .contact__row::before, .event::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--paper); transform: scaleX(0); transform-origin: left; transition: transform .5s cubic-bezier(.65, 0, .35, 1); }
-.contact__email { --pad: 14px; display: inline-flex; align-items: center; gap: .45em; max-width: calc(100% + 2 * var(--pad)); padding: 6px var(--pad) 14px; font: 500 min(54px, 8cqw)/1.1 var(--display); letter-spacing: -.025em; }
+.contact__email { --pad: 14px; display: inline-flex; align-items: center; gap: .45em; max-width: calc(100% + 2 * var(--pad)); padding: 6px var(--pad) 14px; font: 500 min(44px, 7cqw)/1.1 var(--display); letter-spacing: -.025em; }
 .contact__email::after { content: ''; position: absolute; left: var(--pad); right: var(--pad); bottom: 0; height: 1px; background: #fff8; transition: opacity .3s; }
 .contact__name { transition: transform .5s cubic-bezier(.65, 0, .35, 1); }
 .contact__icon, .event__icon { display: grid; place-items: center; flex-shrink: 0; width: 38px; height: 38px; border: 1px solid #fff8; border-radius: 50%; transition: background-color .3s, border-color .3s, color .3s; }
 .contact__icon .arrow, .event__icon .arrow { width: 14px; height: 14px; transition: transform .5s cubic-bezier(.65, 0, .35, 1); }
+.contact__icon { width: 32px; height: 32px; }
 .contact__email .contact__icon { width: .8em; height: .8em; }
 .contact__email .contact__icon .arrow { width: .3em; height: .3em; }
 .contact__email:focus-visible, .contact__row:focus-visible { outline: 2px solid var(--white); outline-offset: 3px; }
-.contact__meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 26px; margin-top: 18px; font-size: 14px; }
+.contact__meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; margin-top: 14px; font-size: 13px; }
 .contact__meta p { opacity: .8; }
 .contact__copy { position: relative; padding: 6px 0; opacity: .8; transition: opacity .2s; }
 .contact__copy::after { content: ''; position: absolute; left: 0; right: 0; bottom: 3px; height: 1px; background: currentColor; transform: scaleX(.35); transform-origin: left; transition: transform .25s; }
 .contact__copy:hover, .contact__copy:focus-visible { opacity: 1; }
 .contact__copy:hover::after, .contact__copy:focus-visible::after { transform: scaleX(1); }
-.contact__copy-status { font-size: 13px; opacity: .8; }
-.contact__group { display: grid; grid-template-columns: 136px minmax(0, 1fr); gap: 0 20px; align-items: first baseline; border-top: 1px solid #fff6; }
+.contact__copy-status { font-size: 12px; opacity: .8; }
+.contact__group { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 0 16px; align-items: first baseline; border-top: 1px solid #fff6; }
 .contact__group:last-of-type { border-bottom: 1px solid #fff6; }
-.contact__group h3 { font-family: var(--body); font-weight: 400; font-size: 12px; opacity: .75; }
+.contact__group h3 { font-family: inherit; font-weight: 400; font-size: 11px; opacity: .85; }
 .contact__group ul { list-style: none; margin: 0; padding: 0; }
 .contact__group li + li { border-top: 1px solid #fff2; }
-.contact__row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 18px; padding: 14px var(--pad); }
-.contact__name { font: 500 clamp(26px, 2.4vw, 38px)/1.1 var(--display); letter-spacing: -.02em; }
-.contact__detail { font-size: 14px; white-space: nowrap; opacity: .8; transition: opacity .3s; }
+.contact__row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; padding: 12px var(--pad); }
+.contact__name { font: 500 clamp(22px, 2vw, 32px)/1.1 var(--display); letter-spacing: -.02em; }
+.contact__detail { font-size: 12px; white-space: nowrap; opacity: .8; transition: opacity .3s; }
 .contact__email:is(:focus-visible, :active), .contact__row:is(:focus-visible, :active) { color: var(--red); }
 .contact__email:is(:focus-visible, :active)::before, .contact__row:is(:focus-visible, :active)::before { transform: none; }
 .contact__email:is(:focus-visible, :active)::after { opacity: 0; }
@@ -254,9 +259,9 @@ h1, h2, h3 { font-family: var(--display); font-weight: 500; }
   .contact__email:hover .contact__icon, .contact__row:hover .contact__icon { background: var(--red); border-color: var(--red); color: var(--white); }
   .contact__email:hover .arrow, .contact__row:hover .arrow { transform: rotate(45deg); }
 }
-.contact__back { grid-column: 2; justify-self: start; display: inline-flex; align-items: baseline; gap: 10px; font-size: 14px; margin-top: 36px; padding: 6px 0; opacity: .7; transition: opacity .2s; }
+.contact__back { grid-column: 2; justify-self: start; display: inline-flex; align-items: baseline; gap: 10px; font-size: 13px; margin-top: 28px; padding: 6px 0; opacity: .7; transition: opacity .2s; }
 .contact__back:hover, .contact__back:focus-visible { opacity: 1; }
-.contact__back span { font-size: 18px; }
+.contact__back span { font-size: 16px; }
 /* Narrow channel columns place each label above its links. */
 @container (max-width: 519px) {
   .contact__group { grid-template-columns: minmax(0, 1fr); padding-top: 18px; }
@@ -298,10 +303,6 @@ dialog::backdrop { background: #0b0c0bf0; }
   .live { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 28px; }
   .live__intro { margin-top: 0; }
   .live::after { background: linear-gradient(to bottom, #05050566, #050505d9 34%, #050505eb); }
-  .contact { grid-template-columns: 1fr; gap: 70px; }
-  .contact__back { grid-column: auto; margin-top: -34px; }
-  .contact__lead .display { margin-bottom: 40px; }
-  .contact__email { font-size: min(54px, 7.5cqw); }
 }
 /* Landscape tablets and small laptops: compact type keeps each aleas screen within the window. */
 @media (min-width: 721px) and (max-width: 1050px) and (max-height: 860px) {
@@ -312,6 +313,21 @@ dialog::backdrop { background: #0b0c0bf0; }
   .release__actions { gap: 8px; }
   .release__facts dd { font-size: 17px; }
   .release__about p { font-size: 15px; line-height: 1.5; }
+}
+@media (max-width: 800px) {
+  .contact { grid-template-columns: 1fr; gap: 36px; padding: 72px 52px 52px 24px; }
+  .contact__portrait { width: min(100%, 620px); }
+  .contact__channels { max-width: 560px; }
+  .contact__lead .display { font-size: min(92px, 22cqw); margin: 0 0 28px; }
+  .contact__email { font-size: min(36px, 7.2cqw); padding-bottom: 12px; }
+  .contact__meta { font-size: 12px; gap: 4px 18px; }
+  .contact__email, .contact__row { --pad: 12px; }
+  .contact__row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'name icon' 'detail icon'; gap: 3px 14px; padding: 10px var(--pad) 12px; }
+  .contact__name { grid-area: name; font-size: 23px; }
+  .contact__detail { grid-area: detail; }
+  .contact__icon { grid-area: icon; width: 30px; height: 30px; }
+  .contact__email .contact__icon { width: .8em; height: .8em; }
+  .contact__back { grid-column: auto; margin-top: -16px; }
 }
 @media (max-width: 720px) {
   html { scroll-snap-type: none; }
@@ -346,7 +362,6 @@ dialog::backdrop { background: #0b0c0bf0; }
   .text-link { font-size: 17px; gap: 20px; }
   .biography { min-height: 0; padding: 20px 46px 20px 24px; }
   .biography .biography__portrait { height: min(46svh, 94vw); }
-  .biography__portrait img { object-position: 50% calc(18px - min(11svh, 22.5vw)); transform: scale(1.06); }
   .biography::after { background: linear-gradient(to bottom, transparent 8svh, #11170f44 20svh, #11170ff5 min(36svh, 76vw), #11170f min(40svh, 80vw)); }
   .biography__copy h2 { margin: 0 0 12px; }
   .biography__copy { font-size: clamp(15px, 1.9svh, 17px); line-height: 1.38; }
@@ -372,19 +387,6 @@ dialog::backdrop { background: #0b0c0bf0; }
   .event time { font-size: 20px; }
   .event p { font-size: 14px; }
   .event__info > span { font-size: 11px; }
-  .contact { gap: 46px; padding: 90px 60px 65px 24px; }
-  .contact__lead .display { font-size: min(90px, 23cqw); margin: 25px 0 30px; }
-  .contact__email { font-size: min(40px, 8cqw); padding-bottom: 12px; }
-  .contact__meta { font-size: 13px; gap: 4px 22px; }
-  .contact__email, .contact__row { --pad: 12px; }
-  .contact__row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'name icon' 'detail icon'; gap: 4px 16px; padding: 10px var(--pad) 14px; }
-  .contact__name { grid-area: name; }
-  .contact__detail { grid-area: detail; }
-  .contact__icon { grid-area: icon; width: 36px; height: 36px; }
-  .contact__email .contact__icon { width: 30px; height: 30px; }
-  .contact__email .contact__icon .arrow { width: 12px; height: 12px; }
-  .contact__name { font-size: 26px; }
-  .contact__back { margin-top: -22px; }
   .eyebrow { font-size: 11px; }
   dialog { max-width: calc(100vw - 24px); max-height: 94svh; }
   .lightbox { padding: 65px 15px 20px; width: calc(100vw - 24px); }
@@ -405,9 +407,9 @@ dialog::backdrop { background: #0b0c0bf0; }
   .video-card__title { font-size: 20px; margin-top: 12px; }
   .release__facts { margin-top: 30px; }
   .release__facts > div { padding: 11px 0 12px; }
-  .contact__lead .display { font-size: 80px; margin-bottom: 32px; }
+  .contact__lead .display { font-size: min(74px, 23cqw); margin-bottom: 24px; }
   .contact__row { padding: 10px var(--pad); }
-  .contact__name { font-size: 28px; }
+  .contact__name { font-size: 24px; }
   .live__intro { margin-top: -16px; }
   .live__intro h2 { font-size: 140px; }
 }
@@ -425,7 +427,6 @@ dialog::backdrop { background: #0b0c0bf0; }
 
 @media (min-width: 721px) and (max-aspect-ratio: 1 / 1) {
   .biography .biography__portrait { height: 65svh; }
-  .biography__portrait img { object-position: 50% calc(4svh - max(18vw, 15.6svh)); }
   .biography::after { background: linear-gradient(to bottom, transparent 20svh, #11170f44 35svh, #11170ff5 53svh, #11170f 57svh); }
 }
 
@@ -439,7 +440,6 @@ dialog::backdrop { background: #0b0c0bf0; }
 @media (min-width: 541px) and (max-height: 500px) {
   .biography { padding: 14px 44px 14px 24px; }
   .biography .biography__portrait { height: 100%; }
-  .biography__portrait img { object-position: 50% calc(6svh - max(16vw, 24svh)); transform: scale(1.04); }
   .biography::after { background: linear-gradient(to bottom, transparent 24%, #090e0877 45%, #090e08e6 75%, #090e08f5 100%); }
   .biography__copy h2 { font-size: clamp(30px, 5vw, 42px); margin-bottom: 8px; }
   .biography__copy { --bio-columns: 1; display: flex; flex-direction: column; max-height: 44%; }
